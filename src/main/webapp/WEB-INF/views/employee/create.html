@@ -13,7 +13,6 @@
     <p th:text="${message}"></p>
 </th:block>
 <form th:action="@{/employee/save}" th:object="${employeeForm}" method="post" enctype="multipart/form-data">
-    <input type="hidden" th:field="*{id}">
     <div>
         <label>Name:</label>
         <input type="text" th:field="*{name}">

@@ -78,8 +78,26 @@ public class EmployeeController {
             ModelAndView modelAndView = new ModelAndView("/error-404");
             return modelAndView;
         }
-
     }
 
+    @PostMapping("/update")
+    public ModelAndView updateEmployee(@ModelAttribute EmployeeForm employeeForm) {
+        MultipartFile multipartFile = employeeForm.getAvatar();
+        String fileName = multipartFile.getOriginalFilename();
+        String fileUpload = env.getProperty("file_upload");
 
+        try {
+            FileCopyUtils.copy(employeeForm.getAvatar().getBytes(), new File(fileUpload + fileName));
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+        Employee employee = new Employee(employeeForm.getName(),
+                employeeForm.getBirthDate(), employeeForm.getAddress(), employeeForm.getSalary(), fileName);
+        employee.setId(employeeForm.getId());
+        employeeService.save(employee);
+        ModelAndView modelAndView = new ModelAndView("/employee/edit");
+        modelAndView.addObject("employeeForm", employeeForm);
+        modelAndView.addObject("message", "Updated new employee information successfully");
+        return modelAndView;
+    }
 }
