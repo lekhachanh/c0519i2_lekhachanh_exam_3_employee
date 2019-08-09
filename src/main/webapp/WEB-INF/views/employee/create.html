@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<h3>Add Employee</h3>
+<p>
+    <a href="/employee/list">Back to Employee list</a>
+</p>
+<th:block th:if="${message}">
+    <p th:text="${message}"></p>
+</th:block>
+<form th:action="@{/employee/save}" th:object="${employeeForm}" method="post" enctype="multipart/form-data">
+    <input type="hidden" th:field="*{id}">
+    <div>
+        <label>Name:</label>
+        <input type="text" th:field="*{name}">
+    </div>
+    <div>
+        <label>BirthDate:</label>
+        <input type="text" th:field="*{birthDate}">
+    </div>
+    <div>
+        <label>Address:</label>
+        <input type="text" th:field="*{address}">
+    </div>
+    <div>
+        <label>Salary:</label>
+        <input type="text" th:field="*{salary}">
+    </div>
+    <div>
+        <label>Avatar:</label>
+        <td><input type="file" th:field="*{avatar}"></td>
+    </div>
+    <input type="submit" value="Save"/>
+</form>
+</body>
+</html>
