@@ -9,13 +9,13 @@ public class EmployeeForm {
     private String name;
     private LocalDate birthDate;
     private String address;
-    private Long salary;
+    private Double salary;
     private MultipartFile avatar;
 
     public EmployeeForm() {
     }
 
-    public EmployeeForm(int id, String name, LocalDate birthDate, String address, Long salary, MultipartFile avatar) {
+    public EmployeeForm(int id, String name, LocalDate birthDate, String address, Double salary, MultipartFile avatar) {
         this.id = id;
         this.name = name;
         this.birthDate = birthDate;
@@ -56,11 +56,11 @@ public class EmployeeForm {
         this.address = address;
     }
 
-    public Long getSalary() {
+    public Double getSalary() {
         return salary;
     }
 
-    public void setSalary(Long salary) {
+    public void setSalary(Double salary) {
         this.salary = salary;
     }
 

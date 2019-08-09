@@ -3,6 +3,7 @@ package com.codegym.controller;
 import com.codegym.model.Employee;
 import com.codegym.model.EmployeeForm;
 import com.codegym.service.EmployeeService;
+import com.sun.org.apache.xpath.internal.operations.Mod;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.data.domain.Page;
@@ -11,10 +12,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.FileCopyUtils;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -33,7 +31,7 @@ public class EmployeeController {
     private EmployeeService employeeService;
 
     @GetMapping("/list")
-    public ModelAndView listEmployee(@PageableDefault(page = 10, sort = "salary", direction = Sort.Direction.DESC) Pageable pageable){
+    public ModelAndView listEmployee(@PageableDefault(sort = "salary", direction = Sort.Direction.DESC) Pageable pageable){
         Page<Employee> employees = employeeService.findAll(pageable);
         ModelAndView modelAndView = new ModelAndView("/employee/list");
         modelAndView.addObject("employees", employees);
@@ -65,4 +63,23 @@ public class EmployeeController {
         modelAndView.addObject("employeeForm", new EmployeeForm());
         return modelAndView;
     }
+
+    @GetMapping("/edit/{id}")
+    public ModelAndView showEditForm(@PathVariable Long id){
+        Employee employee = employeeService.findById(id);
+        if (employee != null){
+            EmployeeForm employeeForm = new EmployeeForm(employee.getId(), employee.getName(),
+                    employee.getBirthDate(), employee.getAddress(), employee.getSalary(), null);
+            ModelAndView modelAndView = new ModelAndView("/employee/edit");
+            modelAndView.addObject("employeeForm", employeeForm);
+            modelAndView.addObject("employee", employee);
+            return modelAndView;
+        }else {
+            ModelAndView modelAndView = new ModelAndView("/error-404");
+            return modelAndView;
+        }
+
+    }
+
+
 }

@@ -13,7 +13,7 @@ public class Employee {
     private String name;
     private LocalDate birthDate;
     private String address;
-    private double salary;
+    private Double salary;
     private String avatar;
 
 //    @ManyToOne
@@ -24,7 +24,7 @@ public class Employee {
     public Employee() {
     }
 
-    public Employee(String name, LocalDate birthDate, String address, double salary, String avatar) {
+    public Employee(String name, LocalDate birthDate, String address, Double salary, String avatar) {
         this.name = name;
         this.birthDate = birthDate;
         this.address = address;
@@ -72,11 +72,11 @@ public class Employee {
         this.avatar = avatar;
     }
 
-    public double getSalary() {
+    public Double getSalary() {
         return salary;
     }
 
-    public void setSalary(double salary) {
+    public void setSalary(Double salary) {
         this.salary = salary;
     }
 }

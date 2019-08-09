@@ -1,39 +1,37 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Employee List</title>
 </head>
 <body>
-<a href="/employee/create">Create new employee</a>
-<h1>Employee list</h1>
+<h2>Employee List</h2>
+<p>
+    <a href="/employee/create">Create Employee</a>
+</p>
 <table border="1">
     <tr>
         <th>Name</th>
         <th>BirthDate</th>
         <th>Address</th>
-        <th>Salary</th>
+        <th>salary</th>
         <th>Avatar</th>
         <th>Edit</th>
         <th>Delete</th>
+
     </tr>
-    <th:block th:each="employee: ${employees}">
+    <th:block th:each="row : ${employees}">
         <tr>
-            <td th:text="${employee.name}"></td>
-            <td th:text="${employee.birthDate}"></td>
-            <td th:text="${employee.address}"></td>
-            <td th:text="${employee.salary}"></td>
-            <td th:text="${employee.avatar}"></td>
-<!--            <td th:text="${employee.department.name}"></td>-->
-            <td><a th:href="@{/employee/edit/__${employee.id}__}">Edit</a></td>
-            <td><a th:href="@{/employee/delete/__${employee.id}__}">Delete</a></td>
+            <td th:text="${row.getName()}"></td>
+            <td th:text="${row.getBirthDate()}"></td>
+            <td th:text="${row.getAddress()}"></td>
+            <td th:text="${row.getSalary()}"></td>
+            <td><img width="50px" height="80px" th:src="@{'/image/' + ${row.getAvatar()}}"></td>
+            <td><a th:href="@{/employee/edit/__${row.getId()}__}">Edit</a></td>
+            <td><a th:href="@{/employee/delete/__${row.getId()}__}">Delete</a></td>
         </tr>
     </th:block>
+
 </table>
-<div>
-    <a th:href="@{'/employee/list'(page=${employees.number - 1})}" th:if="${employees.hasPrevious()}">Previous</a>
-    <span th:text="${employees.number + 1}"></span>/<span th:text="${employees.totalPages}"></span>
-    <a th:href="@{'/employee/list'(page=${employees.number + 1})}" th:if="${employees.hasNext()}">Next</a>
-</div>
 </body>
 </html>
