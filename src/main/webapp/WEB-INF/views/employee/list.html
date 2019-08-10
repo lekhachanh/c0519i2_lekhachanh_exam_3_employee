@@ -15,27 +15,33 @@
         <th>BirthDate</th>
         <th>Address</th>
         <th>salary</th>
+        <th>Department</th>
         <th>Avatar</th>
         <th>Edit</th>
         <th>Delete</th>
 
     </tr>
-    <th:block th:each="row : ${employees}">
+    <th:block th:each="employee : ${employees}">
         <tr>
-            <td th:text="${row.getName()}"></td>
-            <td th:text="${row.getBirthDate()}"></td>
-            <td th:text="${row.getAddress()}"></td>
-            <td th:text="${row.getSalary()}"></td>
-            <td><img width="50px" height="80px" th:src="@{'/image/' + ${row.getAvatar()}}"></td>
-            <td><a th:href="@{/employee/edit/__${row.getId()}__}">Edit</a></td>
-            <td><a th:href="@{/employee/delete/__${row.getId()}__}">Delete</a></td>
+            <td th:text="${employee.getName()}"></td>
+            <td th:text="${employee.getBirthDate()}"></td>
+            <td th:text="${employee.getAddress()}"></td>
+            <td th:text="${employee.getSalary()}"></td>
+            <th th:text="${employee.department.getName()}"></th>
+            <td><img width="50px" height="80px" th:src="@{'/image/' + ${employee.getAvatar()}}"></td>
+            <td><a th:href="@{/employee/edit/__${employee.getId()}__}">Edit</a></td>
+            <td><a th:href="@{/employee/delete/__${employee.getId()}__}">Delete</a></td>
         </tr>
     </th:block>
 </table>
+<p>
+    <a href="/department/list">Go to department list</a>
+</p>
 <div>
     <a th:href="@{'/employee/list'(page=${employees.number - 1})}" th:if="${employees.hasPrevious()}">Previous</a>
     <span th:text="${employees.number + 1}"></span>/<span th:text="${employees.totalPages}"></span>
     <a th:href="@{'/employee/list'(page=${employees.number + 1})}" th:if="${employees.hasNext()}">Next</a>
 </div>
+
 </body>
 </html>

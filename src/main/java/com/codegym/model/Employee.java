@@ -13,15 +13,15 @@ public class Employee {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private String name;
+
     private LocalDate birthDate;
     private String address;
     private Double salary;
     private String avatar;
 
-//    @ManyToOne
-//    @JoinColumn(name = "department_id")
-//    private Department department;
-
+    @ManyToOne
+    @JoinColumn(name = "department_id")
+    private Department department;
 
     public Employee() {
     }
@@ -80,5 +80,13 @@ public class Employee {
 
     public void setSalary(Double salary) {
         this.salary = salary;
+    }
+
+    public Department getDepartment() {
+        return department;
+    }
+
+    public void setDepartment(Department department) {
+        this.department = department;
     }
 }

@@ -1,6 +1,6 @@
 package com.codegym.model;
 
-import org.springframework.format.annotation.DateTimeFormat;
+
 import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDate;
@@ -13,15 +13,18 @@ public class EmployeeForm {
     private Double salary;
     private MultipartFile avatar;
 
+    private Department department;
+
     public EmployeeForm() {
     }
 
-    public EmployeeForm(Long id, String name, LocalDate birthDate, String address, Double salary, MultipartFile avatar) {
+    public EmployeeForm(Long id, String name, LocalDate birthDate, String address, Double salary, Department department, MultipartFile avatar) {
         this.id = id;
         this.name = name;
         this.birthDate = birthDate;
         this.address = address;
         this.salary = salary;
+        this.department = department;
         this.avatar = avatar;
     }
 
@@ -71,5 +74,13 @@ public class EmployeeForm {
 
     public void setAvatar(MultipartFile avatar) {
         this.avatar = avatar;
+    }
+
+    public Department getDepartment() {
+        return department;
+    }
+
+    public void setDepartment(Department department) {
+        this.department = department;
     }
 }

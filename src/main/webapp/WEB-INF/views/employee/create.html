@@ -13,27 +13,38 @@
     <p th:text="${message}"></p>
 </th:block>
 <form th:action="@{/employee/save}" th:object="${employeeForm}" method="post" enctype="multipart/form-data">
-    <div>
-        <label>Name:</label>
-        <input type="text" th:field="*{name}">
-    </div>
-    <div>
-        <label>BirthDate:</label>
-        <input type="text" th:field="*{birthDate}">
-    </div>
-    <div>
-        <label>Address:</label>
-        <input type="text" th:field="*{address}">
-    </div>
-    <div>
-        <label>Salary:</label>
-        <input type="text" th:field="*{salary}">
-    </div>
-    <div>
-        <label>Avatar:</label>
-        <td><input type="file" th:field="*{avatar}"></td>
-    </div>
-    <input type="submit" value="Save"/>
+    <table>
+        <tr>
+            <td>Name:</td>
+            <td><input type="text" th:field="*{name}"></td>
+        </tr>
+        <tr>
+            <td>BirthDate:</td>
+            <td><input type="text" th:field="*{birthDate}"></td>
+        </tr>
+        <tr>
+            <td>Address:</td>
+            <td><input type="text" th:field="*{address}"></td>
+        </tr>
+        <tr>
+            <td>Salary:</td>
+            <td><input type="text" th:field="*{salary}"></td>
+        </tr>
+        <tr>
+            <td>Department</td>
+            <td>
+                <select th:field="*{department}">
+                    <option th:each="p : ${departments}" th:value="${p.id}" th:text="${p.name}"></option>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td>Avatar:</td>
+            <td><input type="file" th:field="*{avatar}"></td>
+        </tr>
+        <td></td>
+        <td><input type="submit" value="Save"/></td>
+    </table>
 </form>
 </body>
 </html>

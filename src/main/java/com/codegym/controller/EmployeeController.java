@@ -1,9 +1,11 @@
 package com.codegym.controller;
 
+import com.codegym.model.Department;
 import com.codegym.model.Employee;
 import com.codegym.model.EmployeeForm;
+import com.codegym.service.DepartmentService;
 import com.codegym.service.EmployeeService;
-import com.sun.org.apache.xpath.internal.operations.Mod;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.data.domain.Page;
@@ -29,6 +31,15 @@ public class EmployeeController {
 
     @Autowired
     private EmployeeService employeeService;
+
+    @Autowired
+    private DepartmentService departmentService;
+
+    @ModelAttribute("departments")
+    public Page <Department> findAll(Pageable pageable){
+        return departmentService.findAll(pageable);
+    }
+
 
     @GetMapping("/list")
     public ModelAndView listEmployee(@PageableDefault(sort = "salary", direction = Sort.Direction.DESC) Pageable pageable){
@@ -57,6 +68,7 @@ public class EmployeeController {
         }
         Employee employee = new Employee(employeeForm.getName(),employeeForm.getBirthDate()
                 , employeeForm.getAddress(), employeeForm.getSalary(), fileName);
+        employee.setDepartment(employeeForm.getDepartment());
         employeeService.save(employee);
         ModelAndView modelAndView = new ModelAndView("/employee/create");
         modelAndView.addObject("message", "created new employee");
@@ -69,7 +81,7 @@ public class EmployeeController {
         Employee employee = employeeService.findById(id);
         if (employee != null){
             EmployeeForm employeeForm = new EmployeeForm(employee.getId(), employee.getName(),
-                    employee.getBirthDate(), employee.getAddress(), employee.getSalary(), null);
+                    employee.getBirthDate(), employee.getAddress(), employee.getSalary(),employee.getDepartment(), null);
             ModelAndView modelAndView = new ModelAndView("/employee/edit");
             modelAndView.addObject("employeeForm", employeeForm);
             modelAndView.addObject("employee", employee);
@@ -79,18 +91,19 @@ public class EmployeeController {
             return modelAndView;
         }
     }
-
+//loi tieng viet va thieu validate
     @PostMapping("/update")
     public ModelAndView updateEmployee(@ModelAttribute EmployeeForm employeeForm) {
         MultipartFile multipartFile = employeeForm.getAvatar();
         String fileName = multipartFile.getOriginalFilename();
-        String fileUpload = env.getProperty("file_upload");
+        String fileUpload = env.getProperty("file_upload").toString();
 
         try {
             FileCopyUtils.copy(employeeForm.getAvatar().getBytes(), new File(fileUpload + fileName));
         } catch (IOException ex) {
             ex.printStackTrace();
         }
+
         Employee employee = new Employee(employeeForm.getName(),
                 employeeForm.getBirthDate(), employeeForm.getAddress(), employeeForm.getSalary(), fileName);
         employee.setId(employeeForm.getId());
@@ -100,4 +113,30 @@ public class EmployeeController {
         modelAndView.addObject("message", "Updated new employee information successfully");
         return modelAndView;
     }
+
+    @GetMapping("/delete/{id}")
+    public ModelAndView showDeleteForm(@PathVariable Long id) {
+        Employee employee = employeeService.findById(id);
+        if (employee != null) {
+            EmployeeForm employeeForm = new EmployeeForm(employee.getId(), employee.getName(), employee.getBirthDate(),
+                    employee.getAddress(), employee.getSalary(),employee.getDepartment(),null);
+            ModelAndView modelAndView = new ModelAndView("/employee/delete");
+            modelAndView.addObject("employeeForm", employeeForm);
+            modelAndView.addObject("employee", employee);
+            return modelAndView;
+        } else {
+            ModelAndView modelAndView = new ModelAndView("/error-404");
+            return modelAndView;
+        }
+    }
+
+    @PostMapping("/remove")
+    public ModelAndView removeCustomer(@ModelAttribute ("employee") Employee employee){
+        employeeService.remove(employee.getId());
+        ModelAndView modelAndView = new ModelAndView("/employee/delete");
+        modelAndView.addObject("message", "deleted successfully ");
+        return modelAndView;
+    }
+
+
 }

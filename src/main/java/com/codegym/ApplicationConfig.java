@@ -2,7 +2,10 @@ package com.codegym;
 
 
 import com.codegym.converter.StringToLocalDateConverter;
+import com.codegym.formatter.DepartmentFormatter;
+import com.codegym.service.DepartmentService;
 import com.codegym.service.EmployeeService;
+import com.codegym.service.impl.DepartmentServiceImpl;
 import com.codegym.service.impl.EmployeeServiceImpl;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -67,10 +70,10 @@ public class ApplicationConfig extends WebMvcConfigurerAdapter implements Applic
         return new EmployeeServiceImpl();
     }
 //
-//    @Bean
-//    public ProvinceService provinceService() {
-//        return new ProvinceServiceImpl();
-//    }
+    @Bean
+    public DepartmentService departmentService() {
+        return new DepartmentServiceImpl();
+    }
 
 
     //cau hinh thymeleaf
@@ -167,10 +170,6 @@ public class ApplicationConfig extends WebMvcConfigurerAdapter implements Applic
         StringToLocalDateConverter stringToLocalDateConverter = new
                 StringToLocalDateConverter("MM/dd/yyyy");
         registry.addConverter(stringToLocalDateConverter);
+        registry.addFormatter(new DepartmentFormatter(applicationContext.getBean(DepartmentService.class)));
     }
-
-//    @Override
-//    public void addFormatters(FormatterRegistry registry) {
-//        registry.addFormatter(new ProvinceFormatter(applicationContext.getBean(ProvinceService.class)));
-//    }
 }

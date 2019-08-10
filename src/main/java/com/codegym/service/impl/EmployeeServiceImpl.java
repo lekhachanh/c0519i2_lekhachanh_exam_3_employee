@@ -1,5 +1,6 @@
 package com.codegym.service.impl;
 
+import com.codegym.model.Department;
 import com.codegym.model.Employee;
 import com.codegym.repository.EmployeeRepository;
 import com.codegym.service.EmployeeService;
@@ -30,5 +31,10 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     public void remove(Long id) {
         employeeRepository.delete(id);
+    }
+
+    @Override
+    public Iterable<Employee> findAllByDepartment(Department department) {
+        return employeeRepository.findAllByDepartment(department);
     }
 }
