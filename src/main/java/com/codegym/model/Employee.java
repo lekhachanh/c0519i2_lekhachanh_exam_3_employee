@@ -3,6 +3,7 @@ package com.codegym.model;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
+import javax.validation.constraints.Pattern;
 import java.time.LocalDate;
 
 @Entity
@@ -13,7 +14,6 @@ public class Employee {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private String name;
-
     private LocalDate birthDate;
     private String address;
     private Double salary;
