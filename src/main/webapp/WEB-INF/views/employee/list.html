@@ -27,7 +27,7 @@
             <td th:text="${employee.getBirthDate()}"></td>
             <td th:text="${employee.getAddress()}"></td>
             <td th:text="${employee.getSalary()}"></td>
-            <th th:text="${employee.department.getName()}"></th>
+            <td><span th:if="${employee.department!=null}" th:text="${employee.department.getName()}"></span></td>
             <td><img width="50px" height="80px" th:src="@{'/image/' + ${employee.getAvatar()}}"></td>
             <td><a th:href="@{/employee/edit/__${employee.getId()}__}">Edit</a></td>
             <td><a th:href="@{/employee/delete/__${employee.getId()}__}">Delete</a></td>

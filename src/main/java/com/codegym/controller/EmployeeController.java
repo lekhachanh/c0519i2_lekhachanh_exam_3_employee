@@ -36,13 +36,13 @@ public class EmployeeController {
     private DepartmentService departmentService;
 
     @ModelAttribute("departments")
-    public Page <Department> findAll(Pageable pageable){
+    public Page<Department> findAll(Pageable pageable) {
         return departmentService.findAll(pageable);
     }
 
 
     @GetMapping("/list")
-    public ModelAndView listEmployee(@PageableDefault(sort = "salary", direction = Sort.Direction.DESC) Pageable pageable){
+    public ModelAndView listEmployee(@PageableDefault(sort = "salary", direction = Sort.Direction.DESC) Pageable pageable) {
         Page<Employee> employees = employeeService.findAll(pageable);
         ModelAndView modelAndView = new ModelAndView("/employee/list");
         modelAndView.addObject("employees", employees);
@@ -50,23 +50,23 @@ public class EmployeeController {
     }
 
     @GetMapping("/create")
-    public ModelAndView showCreateForm(){
+    public ModelAndView showCreateForm() {
         ModelAndView modelAndView = new ModelAndView("/employee/create");
         modelAndView.addObject("employeeForm", new EmployeeForm());
         return modelAndView;
     }
 
     @PostMapping("/save")
-    public ModelAndView saveEmployee(@ModelAttribute("employee") EmployeeForm employeeForm){
+    public ModelAndView saveEmployee(@ModelAttribute("employee") EmployeeForm employeeForm) {
         MultipartFile multipartFile = employeeForm.getAvatar();
         String fileName = multipartFile.getOriginalFilename();
         String fileUpload = env.getProperty("upload_file");
         try {
             FileCopyUtils.copy(employeeForm.getAvatar().getBytes(), new File(fileUpload + fileName));
-        }catch (IOException e){
+        } catch (IOException e) {
             e.printStackTrace();
         }
-        Employee employee = new Employee(employeeForm.getName(),employeeForm.getBirthDate()
+        Employee employee = new Employee(employeeForm.getName(), employeeForm.getBirthDate()
                 , employeeForm.getAddress(), employeeForm.getSalary(), fileName);
         employee.setDepartment(employeeForm.getDepartment());
         employeeService.save(employee);
@@ -77,21 +77,21 @@ public class EmployeeController {
     }
 
     @GetMapping("/edit/{id}")
-    public ModelAndView showEditForm(@PathVariable Long id){
+    public ModelAndView showEditForm(@PathVariable Long id) {
         Employee employee = employeeService.findById(id);
-        if (employee != null){
+        if (employee != null) {
             EmployeeForm employeeForm = new EmployeeForm(employee.getId(), employee.getName(),
-                    employee.getBirthDate(), employee.getAddress(), employee.getSalary(),employee.getDepartment(), null);
+                    employee.getBirthDate(), employee.getAddress(), employee.getSalary(), employee.getDepartment(), null);
             ModelAndView modelAndView = new ModelAndView("/employee/edit");
             modelAndView.addObject("employeeForm", employeeForm);
             modelAndView.addObject("employee", employee);
             return modelAndView;
-        }else {
+        } else {
             ModelAndView modelAndView = new ModelAndView("/error-404");
             return modelAndView;
         }
     }
-//loi tieng viet va thieu validate
+
     @PostMapping("/update")
     public ModelAndView updateEmployee(@ModelAttribute EmployeeForm employeeForm) {
         MultipartFile multipartFile = employeeForm.getAvatar();
@@ -107,6 +107,7 @@ public class EmployeeController {
         Employee employee = new Employee(employeeForm.getName(),
                 employeeForm.getBirthDate(), employeeForm.getAddress(), employeeForm.getSalary(), fileName);
         employee.setId(employeeForm.getId());
+        employee.setDepartment(employeeForm.getDepartment());
         employeeService.save(employee);
         ModelAndView modelAndView = new ModelAndView("/employee/edit");
         modelAndView.addObject("employeeForm", employeeForm);
@@ -119,7 +120,7 @@ public class EmployeeController {
         Employee employee = employeeService.findById(id);
         if (employee != null) {
             EmployeeForm employeeForm = new EmployeeForm(employee.getId(), employee.getName(), employee.getBirthDate(),
-                    employee.getAddress(), employee.getSalary(),employee.getDepartment(),null);
+                    employee.getAddress(), employee.getSalary(), employee.getDepartment(), null);
             ModelAndView modelAndView = new ModelAndView("/employee/delete");
             modelAndView.addObject("employeeForm", employeeForm);
             modelAndView.addObject("employee", employee);
@@ -131,12 +132,10 @@ public class EmployeeController {
     }
 
     @PostMapping("/remove")
-    public ModelAndView removeCustomer(@ModelAttribute ("employee") Employee employee){
+    public ModelAndView removeCustomer(@ModelAttribute("employee") Employee employee) {
         employeeService.remove(employee.getId());
         ModelAndView modelAndView = new ModelAndView("/employee/delete");
         modelAndView.addObject("message", "deleted successfully ");
         return modelAndView;
     }
-
-
 }

@@ -35,6 +35,12 @@
             <input type="text" th:field="*{salary}"/>
         </div>
         <div>
+            <label>Department:</label>
+            <select th:field="*{department}">
+                <option th:each="p : ${departments}" th:value="${p.id}" th:text="${p.name}"></option>
+            </select>
+        </div>
+        <div>
             <label>Avatar</label>
             <input type="file" th:field="*{avatar}">
         </div>

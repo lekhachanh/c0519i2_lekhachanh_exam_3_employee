@@ -3,12 +3,18 @@ package com.codegym.service.impl;
 import com.codegym.model.Department;
 import com.codegym.model.Employee;
 import com.codegym.repository.DepartmentRepository;
+import com.codegym.repository.EmployeeRepository;
 import com.codegym.service.DepartmentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import java.util.List;
+
 public class DepartmentServiceImpl implements DepartmentService {
+
+    @Autowired
+    private EmployeeRepository employeeRepository;
 
     @Autowired
     private DepartmentRepository departmentRepository;
@@ -31,7 +37,12 @@ public class DepartmentServiceImpl implements DepartmentService {
 
     @Override
     public void remove(Long id) {
-
+        Department department = departmentRepository.findOne(id);
+        Iterable<Employee> employeeList = employeeRepository.findAllByDepartment(department);
+        for (Employee employee: employeeList) {
+            employee.setDepartment(null);
+            employeeRepository.save(employee);
+        }
         departmentRepository.delete(id);
     }
 
