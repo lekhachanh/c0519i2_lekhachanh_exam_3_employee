@@ -42,7 +42,7 @@ public class EmployeeController {
 
 
     @GetMapping("/list")
-    public ModelAndView listEmployee(@PageableDefault(sort = "salary", direction = Sort.Direction.DESC) Pageable pageable) {
+    public ModelAndView listEmployee(@PageableDefault(sort = "salary", size = 5, direction = Sort.Direction.DESC) Pageable pageable) {
         Page<Employee> employees = employeeService.findAll(pageable);
         ModelAndView modelAndView = new ModelAndView("/employee/list");
         modelAndView.addObject("employees", employees);
