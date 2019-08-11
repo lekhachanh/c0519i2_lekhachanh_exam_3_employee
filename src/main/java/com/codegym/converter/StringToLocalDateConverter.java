@@ -19,10 +19,6 @@ public class StringToLocalDateConverter implements Converter<String, LocalDate> 
         try {
             return LocalDate.parse(date, DateTimeFormatter.ofPattern(datePattern));
         } catch (DateTimeParseException e) {
-//            Date today = new Date();
-//            return today.toInstant()
-//                    .atZone(ZoneId.systemDefault())
-//                    .toLocalDate();
             throw new IllegalArgumentException("invalid date format. Please use this pattern\""
                     + datePattern + "\"");
         }

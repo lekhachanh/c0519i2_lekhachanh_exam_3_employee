@@ -84,7 +84,6 @@ public class DepartmentController {
             modelAndView.addObject("department", department);
             modelAndView.addObject("message", "delete successfully");
             return modelAndView;
-
         }else {
             ModelAndView modelAndView = new ModelAndView("/error-404");
             return modelAndView;
